@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect 
 from django.utils.decorators import method_decorator
 from rest_framework import generics, status, views, permissions
-from .serializers import RegisterSerializer, SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer, LogoutSerializer, MySerializer
+from .serializers import RegisterSerializer, SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer, LogoutSerializer, AdminSerializer
 
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -31,7 +31,6 @@ from datetime import datetime, timedelta
 
 
 class CustomRedirect(HttpResponsePermanentRedirect):
-
     allowed_schemes = [os.environ.get('APP_SCHEME'), 'http', 'https']
 
 
@@ -108,6 +107,7 @@ class VerifyEmail(views.APIView):
 
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
+
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -116,6 +116,7 @@ class LoginAPIView(generics.GenericAPIView):
 
 class RequestPasswordResetEmail(generics.GenericAPIView):
     serializer_class = ResetPasswordEmailRequestSerializer
+
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         email = request.data.get('email', '')
@@ -137,7 +138,8 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
 
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
-    serializer_class = SetNewPasswordSerializer
+    serializer_class =SetNewPasswordSerializer 
+    
     def get(self, request, uidb64, token):
         try:
             id = smart_str(urlsafe_base64_decode(uidb64))
@@ -208,6 +210,7 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 
 class SetNewPasswordAPIView(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
+
     def patch(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -216,6 +219,7 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
 
 class LogoutAPIView(generics.GenericAPIView):
     serializer_class = LogoutSerializer
+
     def post(self, request):
         refresh_token = request.data.get('refresh')
         if refresh_token:
@@ -242,7 +246,7 @@ class LogoutAPIView(generics.GenericAPIView):
 
 @method_decorator(has_role('myadmin'), name='dispatch')
 class AdminDashboardView(generics.GenericAPIView):
-    serializer_class = MySerializer
+    serializer_class = AdminSerializer
     # authentication_classes = [TokenAuthentication]
     token_param_config = openapi.Parameter(
         'token', in_=openapi.IN_QUERY, description='Description', type=openapi.TYPE_STRING)
@@ -255,10 +259,8 @@ class AdminDashboardView(generics.GenericAPIView):
             role = payload.get('roles')
             u = User.objects.get(id=user_id)
             name = u.username
-            if not user_id:
-                return Response({'error': 'Token not found'}, status=status.HTTP_400_BAD_REQUEST)
             user_data = {'id': user_id,'username':name, 'roles': role}  
-            serialized_data = MySerializer(data=user_data).initial_data
+            serialized_data = AdminSerializer(data=user_data).initial_data
             return Response(serialized_data)
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)

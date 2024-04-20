@@ -14,7 +14,7 @@
 #     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 # """
 
-
+ 
 from django.contrib import admin
 from django.urls import path, include 
 from rest_framework import permissions
@@ -40,6 +40,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
+    path('', include('menu.urls')),
     path('', schema_view.with_ui('swagger',
                                  cache_timeout=0), name='schema-swagger-ui'),
                                  path('api/api.json/', schema_view.without_ui(cache_timeout=0),

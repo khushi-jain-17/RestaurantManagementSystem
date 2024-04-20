@@ -18,8 +18,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'password','roles']
     def validate(self, attrs):
-        roles = attrs.get('roles','')
-        email = attrs.get('email', '')
         username = attrs.get('username', '')
         if not username.isalnum():
             raise serializers.ValidationError(
@@ -139,7 +137,7 @@ class LogoutSerializer(serializers.Serializer):
             self.fail('bad_token')
 
 
-class MySerializer(serializers.ModelSerializer):
+class AdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
