@@ -28,6 +28,7 @@ from .decorators import *
 from rest_framework.permissions  import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from datetime import datetime, timedelta 
+from rest_framework.reverse import reverse_lazy
 
 
 class CustomRedirect(HttpResponsePermanentRedirect):
@@ -58,7 +59,7 @@ class RegisterView(generics.GenericAPIView):
 #       token = RefreshToken.for_user(user).access_token
         token = self.generate_token(user)  
         current_site = get_current_site(request).domain
-        relative_link = reverse('email-verify')
+        relative_link = reverse_lazy('authentication:email-verify')
         absurl = 'http://' + current_site + relative_link + "?token=" + str(token)
         email_body = 'Hi ' + user.username + \
             ' Use the link below to verify your Email \n' + absurl
@@ -80,8 +81,6 @@ class VerifyEmail(views.APIView):
             print(payload)
             user = User.objects.get(id=payload['user_id'])
             print(user)
-            user_id = payload.get('user_id')
-            print(user_id)
             user_roles = payload.get('roles')
             print(user_roles)
             if not user.is_verified:
