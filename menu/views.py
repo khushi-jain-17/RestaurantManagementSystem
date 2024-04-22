@@ -17,6 +17,7 @@ class MenuCreateView(generics.CreateAPIView):
     serializer_class = CreateSerializer
     token_param_config = openapi.Parameter(
         'token', in_=openapi.IN_QUERY, description='insert token', type=openapi.TYPE_STRING)
+    
     @swagger_auto_schema(manual_parameters=[token_param_config], operation_description="Create a Menu Item")
     def post(self,request):
         mi = request.data
@@ -162,8 +163,6 @@ class ItemsAPIView(generics.ListAPIView):
     serializer_class = MenuItemSerializer 
     search_fields = ['name']
     filter_backends  = (filters.SearchFilter,)
-    # queryset = MenuItem.objects.all()
-    # serializer_class = MenuItemSerializer
 
     @swagger_auto_schema(manual_parameters=[
         openapi.Parameter(
@@ -177,23 +176,3 @@ class ItemsAPIView(generics.ListAPIView):
         return self.list(request, *args, **kwargs)
  
 
-
-
-
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = ['category__name']
-
-    # def get(self, request, *args, **kwargs):
-    #     category_name = self.request.query_params.get('category', '')  
-    #     queryset = MenuItem.objects.all()
-    #     if category_name:
-    #         queryset = queryset.filter(category__name__icontains=category_name)
-    #     return self.list(request, *args, **kwargs)
-
-
-#     search_fields = ['category']
-#     filter_backends  = (filters.SearchFilter,)
-#     queryset = MenuItem.objects.all()
-#     serializer_class = MenuItemSerializer
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)

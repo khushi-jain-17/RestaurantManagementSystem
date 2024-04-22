@@ -4,11 +4,6 @@ from . views import MenuCreateView, MenuListView, MenuDetailView, MenuUpdateView
 app_name='menu'
 
 
-
-
-
-
-
 urlpatterns = [
     path('menu-create/', MenuCreateView.as_view(), name='menu_create'),
     path('menu-list/', MenuListView.as_view(), name='menu_list'),
