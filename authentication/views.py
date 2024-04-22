@@ -31,6 +31,8 @@ from datetime import datetime, timedelta
 from rest_framework.reverse import reverse_lazy
 
 
+
+
 class CustomRedirect(HttpResponsePermanentRedirect):
     allowed_schemes = [os.environ.get('APP_SCHEME'), 'http', 'https']
 
