@@ -1,5 +1,5 @@
 from django.urls import path
-from . views import MenuCreateView, MenuListView, MenuDetailView, MenuUpdateView, MenusListView, MenuAPIView
+from . views import MenuCreateView, MenuListView, MenuDetailView, MenuUpdateView, MenusListView, CategoryAPIView, ItemsAPIView
 
 app_name='menu'
 
@@ -15,6 +15,7 @@ urlpatterns = [
     path('menu-detail/<int:pk>/', MenuDetailView.as_view(), name='menu_detail'),
     path('menu-get-update-destroy/<int:pk>/', MenuUpdateView.as_view(), name='menu-update-destroy'),
     path('my-menu/list/', MenusListView.as_view(), name='my-menu'),
-    path('menu-search/', MenuAPIView.as_view(), name='menu_search'),
+    path('category-search/', CategoryAPIView.as_view(), name='category_search'),
+    path('menu_item/search/',ItemsAPIView.as_view(),name='menu_item_search')
 ]
 

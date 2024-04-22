@@ -131,7 +131,7 @@ class MenusListView(generics.ListAPIView):
 
 
 @method_decorator(has_role('myuser'), name='dispatch')
-class MenuAPIView(generics.ListAPIView):
+class CategoryAPIView(generics.ListAPIView):
     queryset = MenuItem.objects.all()  
     serializer_class = MenuItemSerializer  
     filter_backends = [filters.SearchFilter]
@@ -144,7 +144,7 @@ class MenuAPIView(generics.ListAPIView):
             description='write token',
             type=openapi.TYPE_STRING
         )
-    ], operation_description="Search Menu Items")
+    ], operation_description="Search Menu Items by Category")
     def get(self, request, *args, **kwargs):
         category_name = self.request.query_params.get('category', '')  
         queryset = MenuItem.objects.all()
@@ -152,6 +152,43 @@ class MenuAPIView(generics.ListAPIView):
             queryset = queryset.filter(category__name__icontains=category_name)
         return self.list(request, *args, **kwargs)
 
+
+
+
+
+@method_decorator(has_role('myuser'), name='dispatch')
+class ItemsAPIView(generics.ListAPIView):
+    queryset = MenuItem.objects.all()  
+    serializer_class = MenuItemSerializer 
+    search_fields = ['name']
+    filter_backends  = (filters.SearchFilter,)
+    # queryset = MenuItem.objects.all()
+    # serializer_class = MenuItemSerializer
+
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter(
+            'token',
+            in_=openapi.IN_QUERY,
+            description='write token',
+            type=openapi.TYPE_STRING
+        )
+    ], operation_description="Search Menu Item")
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+ 
+
+
+
+
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['category__name']
+
+    # def get(self, request, *args, **kwargs):
+    #     category_name = self.request.query_params.get('category', '')  
+    #     queryset = MenuItem.objects.all()
+    #     if category_name:
+    #         queryset = queryset.filter(category__name__icontains=category_name)
+    #     return self.list(request, *args, **kwargs)
 
 
 #     search_fields = ['category']

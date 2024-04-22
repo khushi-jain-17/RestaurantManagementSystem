@@ -18,9 +18,12 @@ class UserManager(BaseUserManager):
         return user
         
     
-    def create_superuser(self, username,email,roles,password=None):
+    def create_superuser(self, username,email,roles=None,password=None):
         if password is None:
             raise TypeError('Password should not be none')
+        
+        if roles is None:
+            roles = []
         
         user = self.create_user(username,email,roles,password)
         user.is_superuser = True
