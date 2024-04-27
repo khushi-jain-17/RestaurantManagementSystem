@@ -155,8 +155,6 @@ class CategoryAPIView(generics.ListAPIView):
 
 
 
-
-
 @method_decorator(has_role('myuser'), name='dispatch')
 class ItemsAPIView(generics.ListAPIView):
     queryset = MenuItem.objects.all()  

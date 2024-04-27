@@ -34,8 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1']
 
-
-# Application definition
+SITE_ID=2
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -44,13 +43,31 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "authentication",
     "rest_framework",
     "drf_yasg",
     "corsheaders",
     'rest_framework_simplejwt.token_blacklist',
-    'menu'
+    "authentication",
+    'menu',
+    'media_auth',
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "social_django"
 ]
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE":[
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS": {"access_type":"online"}
+    }
+} 
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -72,7 +89,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware'
+    'django.middleware.common.CommonMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = "verifydj.urls"
@@ -88,6 +107,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends"
             ],
         },
     },
@@ -134,8 +154,8 @@ DATABASES = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
-    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=20),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=25),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=30),
 }
 
 
@@ -186,9 +206,19 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
  
 APPEND_SLASH = False
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CEDENTIALS = True 
+
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+
+LOGIN_REDIRECT_URL ="/"
+LOGOUT_REDIRECT_URL = "/"

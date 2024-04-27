@@ -1,5 +1,6 @@
 from django.urls import path
 from . views import MenuCreateView, MenuListView, MenuDetailView, MenuUpdateView, MenusListView, CategoryAPIView, ItemsAPIView
+from . import views 
 
 app_name='menu'
 
