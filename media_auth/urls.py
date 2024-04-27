@@ -7,6 +7,10 @@ app_name = 'social_auth'
 urlpatterns=[
     path("google/", GoogleSocialAuthView.as_view()),
     path("",views.home),
-    path("logout",views.logout_view)
+    path("logout",views.logout_view),
+    path("git",views.index),
+    path("git_logout",views.gitlogout_view)
 ]
+
+
 

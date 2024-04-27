@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django Google Sign In</title>
+    <title>Django Github Sign In</title>
 </head>
 <body>
     {% load socialaccount %}
-    <h2>Google Login</h2>
-    <a href="{% provider_login_url 'google' %}?next=/">Login with Google</a>
+    <h2>CWS Github Login</h2>
+    <a href="{% provider_login_url 'github' %}?next=/git">Login with Github</a>
 
     {% if user.is_authenticated %}
-    <p>You are signed in as {{user.email}}</p>
-    <a href="logout">Google Logout</a>
+    <p>You are Signed in github</p>
+    <a href="git_logout">Github Logout</a>
     {% endif %}
 </body>
 </html>

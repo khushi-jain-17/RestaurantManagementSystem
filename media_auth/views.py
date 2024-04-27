@@ -20,11 +20,16 @@ class GoogleSocialAuthView(GenericAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-
 def home(request):
     return render(request, "home.html")
-
 
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+def index(request):
+    return render(request, "index.html")
+
+def gitlogout_view(request):
+    logout(request)
+    return redirect("/git")

@@ -34,7 +34,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1']
 
-SITE_ID=2
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -55,17 +54,34 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "social_django"
+    "allauth.socialaccount.providers.github"
 ]
 
+SITE_ID=2
+SITE_ID_GITHUB = 3 
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE":[
             "profile",
             "email"
-        ],
+        ],        
+        'LOGIN_REDIRECT_URL': "/",
+        'LOGOUT_REDIRECT_URL': "/",
         "AUTH_PARAMS": {"access_type":"online"}
+    },
+
+    "github": {
+        'SCOPE': ['user'],
+        'SITE_ID': SITE_ID_GITHUB,
+        'AUTH_PARAMS':  {"access_type":"online"},
+        'LOGIN_REDIRECT_URL': '/git/',
+        'LOGOUT_REDIRECT_URL': '/git/',
+        'APP': {
+            'client_id': 'f20621556f56e8cf4f8a',
+            'secret': '920357dae6a1364db167e6ec4aa0ee8b2c486e42',
+            'key': ''
+        }
     }
 } 
 
@@ -90,8 +106,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = "verifydj.urls"
@@ -107,7 +122,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "social_django.context_processors.backends"
             ],
         },
     },
@@ -220,5 +234,4 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
-LOGIN_REDIRECT_URL ="/"
-LOGOUT_REDIRECT_URL = "/"
+

@@ -28,7 +28,6 @@ urlpatterns = [
     path('api/api.json/', schema_view.without_ui(cache_timeout=0),name='schema-json'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path("accounts/",include("allauth.urls")),
-    path("accounts/",include('social_django.urls')),
     path("",include('media_auth.urls')),                                 
 ]
 
